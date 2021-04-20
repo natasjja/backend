@@ -2,9 +2,9 @@
   "name": "amadstest",
   "version": "1.0.0",
   "description": "A Million Ads Backend Tech Test",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "ts-node-dev index.js",
+    "dev": "ts-node-dev src/index.js",
     "test": "jest",
     "build": "tsc",
     "start": "node dist/index.js"
