@@ -17,11 +17,11 @@ describe('getLatlonFromPostcode', () => {
     };
 
     mockGet.mockResolvedValue(data);
-    const latlon = await getLatlonFromPostcode(['bs84tt']);
+    const latlon = await getLatlonFromPostcode('bs84tt');
 
     expect(latlon).toEqual([{ latitude: 51.450634, longitude: -2.611497 }]);
   });
-  test('it should return an array of latlon for multiple postcodes', async () => {
+  test('it should return an array of latlon from a multiple postcode query string', async () => {
     const data = {
       result: [
         { result: { latitude: 51.450634, longitude: -2.611497 } },
@@ -31,7 +31,7 @@ describe('getLatlonFromPostcode', () => {
     };
 
     mockGet.mockResolvedValue(data);
-    const latlon = await getLatlonFromPostcode(['bs84tt', 'W1G 8TB', 'NW10NE']);
+    const latlon = await getLatlonFromPostcode('bs84tt,W1G 8TB,NW10NE');
 
     expect(latlon).toEqual([
       { latitude: 51.450634, longitude: -2.611497 },
@@ -49,7 +49,7 @@ describe('getLatlonFromPostcode', () => {
     };
 
     mockGet.mockResolvedValue(data);
-    const latlon = await getLatlonFromPostcode(['bs84tt', 'invalid postcode']);
+    const latlon = await getLatlonFromPostcode('bs84tt,invalid postcode');
 
     expect(latlon).toEqual([
       { latitude: 51.450634, longitude: -2.611497 },

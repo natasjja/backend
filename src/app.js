@@ -4,16 +4,15 @@ import { getLatlonFromPostcode } from './services/postcodeService';
 const app = express();
 
 app.get('/locations/', async (req, res) => {
-  let postcodeQueryParam = req.query.postcodes;
-  let postcodes = postcodeQueryParam.split(',');
+  let postcodeQueryString = req.query.postcodes;
 
   try {
-    const result = await getLatlonFromPostcode(postcodes);
+    const result = await getLatlonFromPostcode(postcodeQueryString);
 
     return res.send(result);
   } catch (err) {
     return res
-      .status(404)
+      .status(400)
       .send('There was an issue fetching your location data', err);
   }
 });
