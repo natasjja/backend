@@ -16,10 +16,14 @@ app.get('/postcode/:postcode', (req, res) => {
 });
 
 export async function getLatlonFromPostcode(postcode) {
-  const { result } = await getPostcodeData(postcode);
-  const { latitude, longitude } = result;
+  try {
+    const { result } = await getPostcodeData(postcode);
+    const { latitude, longitude } = result;
 
-  return { latitude, longitude };
+    return { latitude, longitude };
+  } catch (err) {
+    return err.response.data.error;
+  }
 }
 
 export default app;

@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = 'https://api.postcodes.io/postcodes/';
+const BASE_URL = 'https://api.postcodes.io/postcodes';
 
 module.exports = {
   getPostcodeData: (postcode) =>
