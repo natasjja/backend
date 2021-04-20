@@ -11,35 +11,32 @@ describe('getLatlonFromPostcode', () => {
     mockGet.mockClear();
   });
 
-  test('it should return latlon for given postcode', async () => {
+  test('it should return latlon for a single postcode', async () => {
     const data = {
-      result: {
-        latitude: 51.450634,
-        longitude: -2.611497
-      }
+      result: [{ result: { latitude: 51.450634, longitude: -2.611497 } }]
     };
 
     mockGet.mockResolvedValue(data);
-    const latlon = await getLatlonFromPostcode('bs84tt');
+    const latlon = await getLatlonFromPostcode(['bs84tt']);
 
-    expect(latlon).toEqual({
-      latitude: 51.450634,
-      longitude: -2.611497
-    });
+    expect(latlon).toEqual([{ latitude: 51.450634, longitude: -2.611497 }]);
   });
-
-  test('it should return an error for an invalid postcode', async () => {
-    const error = {
-      response: {
-        data: {
-          error: 'Invalid postcode'
-        }
-      }
+  test('it should return an array of latlon for multiple postcodes', async () => {
+    const data = {
+      result: [
+        { result: { latitude: 51.450634, longitude: -2.611497 } },
+        { result: { latitude: 51.519052, longitude: -0.148103 } },
+        { result: { latitude: 51.538614, longitude: -0.14206 } }
+      ]
     };
 
-    mockGet.mockRejectedValue(error);
-    const latlon = await getLatlonFromPostcode('1234');
+    mockGet.mockResolvedValue(data);
+    const latlon = await getLatlonFromPostcode(['bs84tt', 'W1G 8TB', 'NW10NE']);
 
-    expect(latlon).toEqual('Invalid postcode');
+    expect(latlon).toEqual([
+      { latitude: 51.450634, longitude: -2.611497 },
+      { latitude: 51.519052, longitude: -0.148103 },
+      { latitude: 51.538614, longitude: -0.14206 }
+    ]);
   });
 });

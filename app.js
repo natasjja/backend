@@ -3,27 +3,30 @@ import { getPostcodeData } from './postcodes';
 
 const app = express();
 
-// TODO:
-// Multiple Postocdes:
-// Get data from the Postcodes API
-// Return the lat/long for each postcode
+app.get('/locations/', async (req, res) => {
+  let postcodeQueryParam = req.query.postcodes;
+  let postcodes = postcodeQueryParam.split(',');
 
-app.get('/postcode/:postcode', (req, res) => {
-  const postcode = req.params.postcode;
-  getLatlonFromPostcode(postcode).then((data) => {
-    res.send(data);
-  });
+  try {
+    const result = await getLatlonFromPostcode(postcodes);
+
+    return res.send(result);
+  } catch (err) {
+    res.status(400).send('There was an issue fetching your location data', err);
+  }
 });
 
-export async function getLatlonFromPostcode(postcode) {
-  try {
-    const { result } = await getPostcodeData(postcode);
-    const { latitude, longitude } = result;
+export async function getLatlonFromPostcode(postcodes) {
+  const { result } = await getPostcodeData(postcodes);
 
-    return { latitude, longitude };
-  } catch (err) {
-    return err.response.data.error;
-  }
+  const latAndLongs = result.map((location) => {
+    return {
+      latitude: location.result.latitude,
+      longitude: location.result.longitude
+    };
+  });
+
+  return latAndLongs;
 }
 
 export default app;

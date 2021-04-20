@@ -3,6 +3,10 @@ const axios = require('axios');
 const BASE_URL = 'https://api.postcodes.io/postcodes';
 
 module.exports = {
-  getPostcodeData: (postcode) =>
-    axios.get(`${BASE_URL}/${postcode}`).then((res) => res.data)
+  getPostcodeData: (postcodes) =>
+    axios
+      .post(`${BASE_URL}`, {
+        postcodes: postcodes
+      })
+      .then((res) => res.data)
 };
